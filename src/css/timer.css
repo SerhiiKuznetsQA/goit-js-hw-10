@@ -1,0 +1,97 @@
+   body {
+       background-color: #0e0e0e;
+       font-family: 'Orbitron', sans-serif;
+       color: #ffffff;
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       height: 100vh;
+       margin: 0;
+       padding: 20px;
+   }
+
+   section {
+       margin-bottom: 20px;
+   }
+
+   a {
+       color: #0ff;
+       text-decoration: none;
+       font-size: 1.5rem;
+       text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+       transition: color 0.3s ease, text-shadow 0.3s ease;
+   }
+
+   a:hover {
+       color: #ff00ff;
+       text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+   }
+  
+
+   #datetime-picker {
+       background: rgba(255, 255, 255, 0.1);
+       border: none;
+       color: #0ff;
+       padding: 10px;
+       font-size: 1.5rem;
+       margin-bottom: 20px;
+       text-align: center;
+       border-radius: 5px;
+       box-shadow: 0 0 10px #0ff;
+   }
+
+   #datetime-picker:focus {
+       outline: none;
+       box-shadow: 0 0 10px #ff00ff;
+   }
+
+   button[data-start] {
+       background-color: #ff00ff;
+       color: #ffffff;
+       border: none;
+       padding: 10px 20px;
+       font-size: 1.5rem;
+       cursor: pointer;
+       transition: background-color 0.3s ease, box-shadow 0.3s ease;
+       box-shadow: 0 0 10px #ff00ff;
+       border-radius: 5px;
+       margin-bottom: 20px;
+   }
+
+   button[data-start]:hover {
+       background-color: #0ff;
+       box-shadow: 0 0 10px #0ff;
+   }
+   button[data-start].disabled {
+       background-color: #3e7182;
+       box-shadow: none;
+       cursor: not-allowed;
+   }
+
+   .timer {
+       display: flex;
+       gap: 20px;
+   }
+
+   .field {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       background: rgba(255, 255, 255, 0.1);
+       padding: 20px;
+       border-radius: 10px;
+       box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+   }
+
+   .value {
+       font-size: 3rem;
+       color: #0ff;
+       text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff;
+   }
+
+   .label {
+       font-size: 1.2rem;
+       margin-top: 10px;
+       color: #ff00ff;
+       text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+   }

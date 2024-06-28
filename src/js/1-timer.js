@@ -15,42 +15,75 @@ const options = {
   defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        let nowDate = new Date()
-        if (selectedDates[0].getTime() < nowDate.getTime()) {
-            btnStartTimer.disabled = true
-            iziToast.show({
-              message: 'Please choose a date in the future',
-              position: 'topRight',
-                color: 'red',
-            });
-        } else { 
-           userSelectedDate =  selectedDates[0].getTime() 
-            setTimerValues(userSelectedDate);
-            btnStartTimer.disabled = false;
-            setTimeout(() => { 
-                btnStartTimer.disabled = true
-            },4000)
-        }
+      handleDateSelection(selectedDates[0])
+        .then(() => {
+          btnStartTimer.disabled = false
+          btnStartTimer.classList.remove('disabled');
+        })
+        .catch(error => { 
+          btnStartTimer.disabled = true
+          btnStartTimer.classList.add('disabled');
+           iziToast.show({
+             message: error.message,
+             position: 'topRight',
+             color: 'red',
+           });
+        })
   },
 };
 let userSelectedDate;
 let intervalTimer;
+
+
+
 const btnStartTimer = document.querySelector("[data-start]")
 const inputFiled = document.querySelector('#datetime-picker');
 btnStartTimer.disabled = true;
+btnStartTimer.classList.add('disabled');
 btnStartTimer.addEventListener("click", handlerStartTime)
+
+function handleDateSelection(date) {
+  return new Promise((resolve, reject) => {
+    let nowDate = new Date()
+    if (date.getTime() < nowDate.getTime()) {
+      reject(new Error('Please choose a date in the future'));
+    } else {
+      userSelectedDate = date.getTime();
+      resolve(userSelectedDate);
+    }
+  });
+}
+
+
 function handlerStartTime(evt) {
     if (evt) { 
-        btnStartTimer.disabled = true
+      btnStartTimer.disabled = true
+      btnStartTimer.classList.add('disabled');
         inputFiled.disabled = true
     }
-    intervalTimer = setInterval(() => {
-        setTimerValues()
-    }, 1000)
+startTimer()
     
 }
 
-flatpickr('#datetime-picker', options);
+function startTimer() {
+  intervalTimer = setInterval(() => { 
+    updateTimer()
+  },1000)
+}
+
+function updateTimer() {
+  const differencesTime = userSelectedDate -  Date.now()
+  if (differencesTime <= 0) {
+    clearInterval(intervalTimer);
+    inputFiled.disabled = false;
+  } else { 
+    const timeleft = convertMs(differencesTime)
+    addLeadingZero(timeleft)
+  }
+  
+}
+
+
 function convertMs(ms) {
 
   const second = 1000;
@@ -69,23 +102,6 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-function setTimerValues() {
-    let diferencesTime = userSelectedDate - Date.now()
-    const timeLeft = convertMs(diferencesTime)
-    addLeadingZero(timeLeft)
-    if (
-      timeLeft.days === 0 &&
-      timeLeft.hours === 0 &&
-      timeLeft.minutes === 0 &&
-      timeLeft.seconds === 0
-    ) {
-      clearInterval(intervalTimer);
-        inputFiled.disabled = false;
-    }
-    
-    
-}
-
 function addLeadingZero(timeLeft) {
     elements.days.textContent = String(timeLeft.days ).padStart(2, "0")
     elements.hours.textContent = String(timeLeft.hours ).padStart(2, "0")
@@ -94,6 +110,7 @@ function addLeadingZero(timeLeft) {
     
 }
 
+flatpickr('#datetime-picker', options);
 
 
 
